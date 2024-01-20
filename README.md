@@ -1,82 +1,255 @@
-# Simple PHP Git deploy script
-_Automatically deploy the code using PHP and Git._
 
-## Requirements
+# Naming things with Variables
 
-* `git` and `rsync` are required on the server that's running the script
-  (_server machine_).
-  - Optionally, `tar` is required for backup functionality (`BACKUP_DIR` option).
-  - Optionally, `composer` is required for composer functionality (`USE_COMPOSER`
-  option).
-* The system user running PHP (e.g. `www-data`) needs to have the necessary
-  access permissions for the `TMP_DIR` and `TARGET_DIR` locations on
-  the _server machine_.
-* If the Git repository you wish to deploy is private, the system user running PHP
-  also needs to have the right SSH keys to access the remote repository.
+### Introduction
 
-## Usage
+> "There are only two hard things in Computer Science: cache invalidation and naming things."
 
- * Configure the script and put it somewhere that's accessible from the
-   Internet. The preferred way to configure it is to use `deploy-config.php` file.
-   Rename `deploy-config.example.php` to `deploy-config.php` and edit the
-   configuration options there. That way, you won't have to edit the configuration
-   again if you download the new version of `deploy.php`.
- * Configure your git repository to call this script when the code is updated.
-   The instructions for GitHub and Bitbucket are below.
+> -- Phil Karlton
 
-### GitHub
+> "...But ordinary language is all right."
 
- 1. _(This step is only needed for private repositories)_ Go to
-    `https://github.com/USERNAME/REPOSITORY/settings/keys` and add your server
-    SSH key.
- 1. Go to `https://github.com/USERNAME/REPOSITORY/settings/hooks`.
- 1. Click **Add webhook** in the **Webhooks** panel.
- 1. Enter the **Payload URL** for your deployment script e.g. `http://example.com/deploy.php?sat=YourSecretAccessTokenFromDeployFile`.
- 1. _Optional_ Choose which events should trigger the deployment.
- 1. Make sure that the **Active** checkbox is checked.
- 1. Click **Add webhook**.
+> Ludwig Wittgenstein
 
-### Bitbucket
+### Objectives
 
- 1. _(This step is only needed for private repositories)_ Go to
-    `https://bitbucket.org/USERNAME/REPOSITORY/admin/deploy-keys` and add your
-    server SSH key.
- 1. Go to `https://bitbucket.org/USERNAME/REPOSITORY/admin/services`.
- 1. Add **POST** service.
- 1. Enter the URL to your deployment script e.g. `http://example.com/deploy.php?sat=YourSecretAccessTokenFromDeployFile`.
- 1. Click **Save**.
+* Learn about how to use variables to give meaning to data
+* Learn how to assign a variable to data
+* Learn how to declare a variable
+* Learn how to reassign a variable
 
-### Generic Git
+### Declaring and Assigning Variables
 
- 1. Configure the SSH keys.
- 1. Add a executable `.git/hooks/post_receive` script that calls the script e.g.
+So far we have worked with data -- strings, numbers, and booleans.  In this lesson, we'll learn how to use variables to assign names to this data.  For example, this is a string from our Working with **Data Types Lab**.
 
-```sh
-#!/bin/sh
-echo "Triggering the code deployment ..."
-wget -q -O /dev/null http://example.com/deploy.php?sat=YourSecretAccessTokenFromDeployFile
+
+```python
+"art vandelay"
 ```
 
-## Done!
 
-Next time you push the code to the repository that has a hook enabled, it's
-going to trigger the `deploy.php` script which is going to pull the changes and
-update the code on the _server machine_.
 
-For more info, read the source of `deploy.php`.
 
-## Tips'n'Tricks
+    'art vandelay'
 
- * Because `rsync` is used for deployment, the `TARGET_DIR` doesn't have to be
-   on the same server that the script is running e.g. `define('TARGET_DIR',
-   'username@example.com:/full/path/to/target_dir/');` is going to work as long
-   as the user has the right SSH keys and access permissions.
- * You can have multiple scripts with different configurations. Simply rename
-   the `deploy.php` to something else, for example `deploy_master.php` and
-   `deploy_develop.php` and configure them separately. In that case, the
-   configuration files need to be named `deploy_master-config.php` and
-   `deploy_develop-config.php` respectively.
 
----
 
-If you find this script useful, consider donating BTC to `1fLnPZkMYw1TFNEsJZCciwDAmUhDw2wit`.
+Now months later, if we see that string in some code, we may be confused as to what it is, and with even more data, this only becomes more difficult. Think of what we saw in our **Data Types Lab**: `"art.vandelay@vandelay.co"`, `"Ceo"`, `"7285553334"`, `"vandelay.com"`. There's a lot to keep track of.
+
+So, let's use variables to indicate what each of these strings mean.
+
+
+```python
+email = "art.vandelay@vandelay.co"
+```
+
+> **Note:** For this, and all of the subsequent code in gray boxes, you should press shift + enter to ensure that the code executes. If you do not do so with the line above for example, then when we reference `email` in the lines that follow, Jupyter will throw an error indicating that the variable is undefined. So, it is not enough to just type the correct code, we need to run shift + enter on our gray boxes to run this code.
+
+In programming terms, we say that we just declared a variable, `email`, and assigned it to the string, `"art.vandelay@vandelay.co"`.  To do so, we'll follow the procedure below:
+
+    variable = data
+
+Now that we have assigned a variable `email` to a string, we just type the word `email` to see the string again.
+
+
+```python
+email
+```
+
+> *remember to press shift + enter on the gray box above to see the value of our variable, *`email`*.*
+
+Now let's try this with the website:
+
+
+```python
+website = "vandelay.com"
+website
+```
+
+Note that if you introduce a new variable, (declare it), but do not also assign it in the same line, Python will raise an error.
+
+
+```python
+name
+```
+
+
+    ----------------------------------------------------------
+
+    NameError                Traceback (most recent call last)
+
+    <ipython-input-6-9bc0cb2ed6de> in <module>()
+    ----> 1 name
+
+
+    NameError: name 'name' is not defined
+
+
+So that error tells us that `name` is not defined.  We just fix this by declaring `name` and assigning the variable in the same line.
+
+
+```python
+name = 'Art Vandelay'
+name
+```
+
+So this is assigning and reading a variable.  And when we want to see some information again, we can easily find out.
+
+
+```python
+email
+```
+
+### Declaring variables without assignment
+
+We have seen that we can have data without assigning it to variables.  
+
+
+```python
+"Unassigned data"
+```
+
+
+
+
+    'Unassigned data'
+
+
+
+Sometimes we wish to declare a variable without assigning it to data.  In Python, that's a little tricky to do.  As we just saw with `name`, declaring variables without assignment throws an error.  Thankfully, Python has a special type for us that represents nothing at all.
+
+
+```python
+None
+```
+
+
+```python
+type(None)
+```
+
+
+
+
+    NoneType
+
+
+
+None is a data type in Python that represents nothing.  So, if we do not know the type of a variable and want to have the data to the variable be assigned later, we can assign that variable to `None`.
+
+
+```python
+address = None
+```
+
+Notice that `address` is now assigned, but it is assigned to `None`.
+
+
+```python
+address
+```
+
+**Note:** *when variables are assigned to `None`, pressing shift + enter on the cell block will not output anything.*
+
+### Reassigning variables
+
+Now that we have this data, we can imagine using it for some kind of instruction.  For example, say we want to write ourself a memo on how to reach out to someone we just met. Here's the message:
+
+
+```python
+"Send an email to Art Vandelay at 'art.vandelay@vandelay.com' to say how nice it was meeting yesterday."
+```
+
+If we construct this message with variables, we can write the following:
+
+
+```python
+name = "Art Vandelay"
+email = "art.vandelay@vandelay.com"
+```
+
+
+```python
+"Send an email to " + name + " at " + email +  " to say how nice it was meeting yesterday."
+```
+
+Now you meet someone else, "Liz Kaplan" with the email of "liz@ka-plan.com" and want to write a memo with the same instructions, but the only thing that varies are the name and email. This should be easy enough given the way we set up our memo above. First we need to change the variables, `name` and `email`, by setting them to our new data.
+
+
+```python
+name = 'Liz Kaplan'
+email = 'liz@ka-plan.com'
+```
+
+So as you can see, we reassign our variables by just setting `variable = 'new data'`. Presto, our variable is then updated.
+
+
+```python
+name # 'Liz Kaplan'
+```
+
+
+```python
+email # 'liz@ka-plan.com'
+```
+
+Now, if we copy and re-run our previous code, we will see it is automatically updated.
+
+
+```python
+"Send an email to " + name + " at " + email +  " to say how nice it was meeting yesterday."
+```
+
+So in the line above, we are getting to some of the real power of programming.  By choosing the correct variable name, we can begin to change the values of `name` or `email` and operate on their underlying values in the same ways.
+
+### Operating on variables
+
+Just to hammer this point home let's see what we can now do with the name variable.
+
+
+```python
+name
+```
+
+
+```python
+name.upper()
+```
+
+
+```python
+name.title()
+```
+
+Just like how we are able to directly call methods on a string, we can also call methods on a variable that points to a string.  And, if we try to call a method on something that we think is a string, but really is a number, we will see an error.
+
+
+```python
+name = 42
+```
+
+
+```python
+name.upper()
+```
+
+We receive the same error from calling `upper` directly on the number `42` as we do when we call `upper` on a variable that points to the number `42`. So, now that we are working with variables, we may run into errors where we thought a variable is one thing, but it is actually something else. Don't worry, this is no big deal.  We can just check to see what the variable is.
+
+
+```python
+name
+```
+
+Once we have see what the variable is, we can make our change.
+
+
+```python
+name = 'Liz Kaplan'
+name
+```
+
+### Summary
+
+In this lesson, we got a taste for what makes computer programs so powerful.  By using variables, we can write programs that know how to combine data.  This can save us time by avoiding boring, repetitive tasks.  We declare and assign a variable with the pattern of `variable = data`, and reassign a variable with the same pattern.  To reference a variable, we simply type the variable's name.  
+
+We also saw that one of the things to pay attention to when working with variables is that they are sometimes different from what we expect.  So we just type the name of the variable, to see what it really is and make any necessary changes.
